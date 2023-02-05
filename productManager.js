@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 class Product {
   constructor (title, description, price, thumbnail, code, stock) {
     this.title = title;
@@ -10,13 +12,13 @@ class Product {
 }
 
 class ProductManager {
-  constructor (path) {
+  constructor () {
     this.products = [];
-    this.path = path;
   }
 
+
   addProduct = (obj) => {
-    JSON.parse(fs.readFileSync(this.path));
+    this.getProducts();
     if (this.products.some(element => element.code === obj.code)) {
       console.log("necesita otro id");
     } else {
@@ -24,7 +26,7 @@ class ProductManager {
         let length = this.products.length;
         obj.id = length + 1;
         this.products.push(obj);
-        fs.writeFileSync(this.path, JSON.stringify(this.products));
+        let writeFile = fs.writeFileSync('./products.json', JSON.stringify(this.products));
       } else {
         console.log("Es obligatorio llenar todos los campos");
       }
@@ -32,18 +34,19 @@ class ProductManager {
   }
 
   getProducts = () => {
-    JSON.parse(fs.readFileSync(this.path));
+    let readProduct = fs.readFileSync('./products.json');
+    JSON.parse(readProduct);
     console.log(this.products);
   }
 
   getProductById = (id) => {
-    JSON.parse(fs.readFileSync(this.path));
+    this.getProducts();
     const findProd = this.products.find(obj => obj.id === id);
     findProd ? console.log(findProd) : console.error("Ese id no existe");
   }
 
   updateProduct = (id, title, description, price, thumbnail, code, stock) => {
-    JSON.parse(fs.readFileSync(this.path));
+    this.getProducts();
     const index = this.products.findIndex(obj => obj.id === id );
       this.products[index] = {
         title: title,
@@ -54,14 +57,14 @@ class ProductManager {
         stock: stock,
         id: id
       }
-      fs.writeFileSync(this.path, JSON.stringify(this.products));
+      let writeFile = fs.writeFileSync('./products.json', JSON.stringify(this.products));
     }
   
     deleteProduct = (id) => {
-    JSON.parse(fs.readFileSync(this.path));
+    this.getProducts();
     const findProd2 = this.products.find(obj => obj.id === id);
     const eliminateProd = this.products.shift(findProd2);
-    fs.writeFileSync(this.path, JSON.stringify(this.products));
+    let writeFile = fs.writeFileSync('./products.json', JSON.stringify(this.products));
     }
 }
 
