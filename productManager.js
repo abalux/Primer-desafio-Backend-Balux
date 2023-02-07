@@ -22,8 +22,7 @@ class ProductManager {
     this.getProducts();
     if (this.products.some(p => p.code === obj.code)) {
       console.log("necesita otro id");
-    } else{
-      if (Object.values(obj).length > 0) {
+    } else if (Object.values(obj).length > 0) {
         let length = this.products.length;
         obj.id = length + 1;
         this.products.push(obj);
@@ -31,8 +30,7 @@ class ProductManager {
       } else {
         console.log("Es obligatorio llenar todos los campos");
         }
-    }
-  }
+}
 
   getProducts = () => {
     const readProducts = JSON.parse(fs.readFileSync('./products.json'));
