@@ -1,4 +1,5 @@
-const fs = require('fs')
+
+import fs from "fs";
 
 class Product {
   constructor (title, description, price, thumbnail, code, stock) {
@@ -19,53 +20,44 @@ class ProductManager {
 
   addProduct = (obj) => {
     this.getProducts();
-    if (this.products.some(element => element.code === obj.code)) {
+    if (this.products.some(p => p.code === obj.code)) {
       console.log("necesita otro id");
-    } else {
+    } else{
       if (Object.values(obj).length > 0) {
         let length = this.products.length;
         obj.id = length + 1;
         this.products.push(obj);
-        let writeFile = fs.writeFileSync('./products.json', JSON.stringify(this.products));
+        fs.writeFileSync('./products.json', JSON.stringify(this.products));
       } else {
         console.log("Es obligatorio llenar todos los campos");
-      }
+        }
     }
   }
 
   getProducts = () => {
-    let readProduct = fs.readFileSync('./products.json');
-    JSON.parse(readProduct);
-    console.log(this.products);
+    const readProducts = JSON.parse(fs.readFileSync('./products.json'));
+    console.log(readProducts);
   }
 
   getProductById = (id) => {
     this.getProducts();
-    const findProd = this.products.find(obj => obj.id === id);
-    findProd ? console.log(findProd) : console.error("Ese id no existe");
+    const productFound = this.products.find(p => p.id === id);
+    productFound ? console.log(productFound) : console.error("Ese id no existe");
   }
 
   updateProduct = (id, title, description, price, thumbnail, code, stock) => {
     this.getProducts();
-    const index = this.products.findIndex(obj => obj.id === id );
-      this.products[index] = {
-        title: title,
-        description: description,
-        price: price,
-        thumbnail: thumbnail,
-        code: code,
-        stock: stock,
-        id: id
-      }
-      let writeFile = fs.writeFileSync('./products.json', JSON.stringify(this.products));
-    }
+    const index = this.products.findIndex(p => p.id === id );
+    this.products[index] = {title, description, price, thumbnail, code, stock, id}
+    fs.writeFileSync('./products.json', JSON.stringify(this.products));
+  }
   
-    deleteProduct = (id) => {
+  deleteProduct = (id) => {
     this.getProducts();
-    const findProd2 = this.products.find(obj => obj.id === id);
-    const eliminateProd = this.products.shift(findProd2);
-    let writeFile = fs.writeFileSync('./products.json', JSON.stringify(this.products));
-    }
+    const productFound = this.products.find(p => p.id === id);
+    this.products.shift(productFound);
+    fs.writeFileSync('./products.json', JSON.stringify(this.products));
+  }
 }
 
 
