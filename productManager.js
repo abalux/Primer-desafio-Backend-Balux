@@ -23,7 +23,7 @@ class ProductManager {
     if (this.products.some(p => p.code === obj.code)) {
       console.log("necesita otro id");
     } else if (Object.values(obj).length > 0) {
-        let length = this.products.length;
+        const length = this.products.length;
         obj.id = length + 1;
         this.products.push(obj);
         fs.writeFileSync('./products.json', JSON.stringify(this.products));
@@ -60,13 +60,13 @@ class ProductManager {
 
 
 //testeo
-let manager = new ProductManager();
-let productA = new Product("Producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25);
+const manager = new ProductManager();
+const productA = new Product("Producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25);
 manager.getProducts();
 manager.addProduct(productA);
 manager.getProducts();
 manager.getProductById(1);
-let productB = new Product("Producto prueba b ", "Este es un producto prueba b ", 200, "Sin imagen", "abc124", 25);
+const productB = new Product("Producto prueba b ", "Este es un producto prueba b ", 200, "Sin imagen", "abc124", 25);
 manager.addProduct(productB);
 manager.getProducts();
 manager.deleteProduct(1);
